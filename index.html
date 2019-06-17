@@ -1,0 +1,144 @@
+	<!DOCTYPE html>
+	<html>
+	<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script
+	  src="https://code.jquery.com/jquery-3.4.1.min.js"
+	  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+	  crossorigin="anonymous"></script>
+	  
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<style>
+	.rectangle1 {
+	  height: 50px;
+	  width: 100px;
+	  background-color: red;
+	  margin:10px;
+	}
+	.rectangle2 {
+	  height: 50px;
+	  width: 100px;
+	  background-color: blue;
+	  margin:10px;
+	}
+	.rectangle3 {
+	  height: 50px;
+	  width: 100px;
+	  background-color: yellow;
+	  margin:10px;
+	}
+	.rectangle4 {
+	  height: 50px;
+	  width: 100px;
+	  background-color: green;
+	  margin:10px;
+	}
+
+	.out{
+	display:inline-block;
+	justify-content:center;
+	text-align:center;
+	display:flex;
+	}
+	</style>
+	<script>
+			var r_array=[];
+			var flag=0,level=1;
+
+	$(function(){
+
+			var a = [1,2,3,4,5,6,7,8,9,10];
+			var k=0;
+			async function loopTheBoxes ( arr, callback ) {
+			r_array.splice(0,r_array.length);
+				for (var i = level; i--; ) {
+				document.getElementById("msg").innerText="Recognise the pattern.";
+				var random = a.splice(Math.floor(Math.random() * (i + 1)), 1)[0];
+				r_array.push(random%4+1);
+				await callback((random%4)+1);
+				console.log(r_array);
+
+			}
+			document.getElementById("msg").innerText="enter the pattern";
+			flag=1;
+			a = [1,2,3,4,5,6,7,8,9,10];
+		}
+
+			
+			function animateTheBoxes() {
+				$(".button").click( () => {
+					loopTheBoxes( a, ( index ) => {
+						return new Promise( ( resolve ) => {
+							$( ".rectangle" + index ).animate({
+								backgroundColor: "#aa0000",
+								color: "#fff"
+							  }, 2000, function() {
+								  $(this).removeAttr( 'style' );
+								  return resolve();
+							  } );
+						});
+					});
+				});
+				
+				
+			}
+
+			animateTheBoxes();
+			console.log(temp);
+			
+	});
+
+	var temp=[];
+	function after_click(i){
+	console.log('clicked');
+			if(flag==1)
+			{
+			temp.push(i);
+			if(temp.length==r_array.length)
+			{
+				if(JSON.stringify(temp) == JSON.stringify(r_array))
+				{
+				console.log("move to next level!!!");
+				temp=[];
+				level++;
+				document.getElementById("level_number").innerText="Level "+level;
+				document.getElementById("msg").innerText="YAY!! Level Up !";
+				flag=0;
+				if(level==11){
+				document.getElementById("msg").innerText="You won!!";
+				level=1;
+									temp = [];
+								document.getElementById("level_number").innerText="Level "+level;
+				}
+				} else{
+					level = 1;
+					temp = [];
+								document.getElementById("level_number").innerText="Level "+level;
+								console.log('wrong ns');
+								document.getElementById("msg").innerText="OOPS game is reset.";
+				}
+			}
+		}
+	}
+			
+	</script>  
+	</head>
+	<body align="center">
+	<div id="level_number"><p>Level 1</p></div>
+	<div class="out">
+
+	<div class="rectangle1" onclick=after_click(1)></div>
+
+	<div class="rectangle2" onclick=after_click(2)></div>
+
+	<div class="rectangle3" onclick=after_click(3)></div>
+
+	<div class="rectangle4" onclick=after_click(4)></div>
+
+	</div>
+	<br>
+
+	<button class="button">Play</button>
+<p id="msg">let's play</p>
+	</body>
+	</html> 
